@@ -13,6 +13,7 @@ namespace FamilyWeb.Models
         public DbSet<Saving> Savings { get; set; }
         public DbSet<Cash> Cashs { get; set; }
         public DbSet<Cost> Costs { get; set; }
+        public DbSet<Category> Categorys { get; set; }
         public FamilyContext(DbContextOptions<FamilyContext> options)
             : base(options)
         {

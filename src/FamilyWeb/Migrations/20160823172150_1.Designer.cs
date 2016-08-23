@@ -8,7 +8,7 @@ using FamilyWeb.Models;
 namespace FamilyWeb.Migrations
 {
     [DbContext(typeof(FamilyContext))]
-    [Migration("20160823090758_1")]
+    [Migration("20160823172150_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,10 +35,28 @@ namespace FamilyWeb.Migrations
                     b.ToTable("Cashs");
                 });
 
+            modelBuilder.Entity("FamilyWeb.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Categorys");
+                });
+
             modelBuilder.Entity("FamilyWeb.Models.Cost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryId");
 
                     b.Property<DateTime>("Date");
 
@@ -46,11 +64,9 @@ namespace FamilyWeb.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Costs");
                 });
@@ -71,6 +87,8 @@ namespace FamilyWeb.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Current");
 
                     b.Property<DateTime>("Date");
 
@@ -98,8 +116,6 @@ namespace FamilyWeb.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<int>("lala");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -115,11 +131,19 @@ namespace FamilyWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("FamilyWeb.Models.Category", b =>
+                {
+                    b.HasOne("FamilyWeb.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("FamilyWeb.Models.Cost", b =>
                 {
-                    b.HasOne("FamilyWeb.Models.User", "User")
+                    b.HasOne("FamilyWeb.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

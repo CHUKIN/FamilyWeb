@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace FamilyWeb.Migrations
 {
-    public partial class Lol : Migration
+    public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,11 +44,32 @@ namespace FamilyWeb.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categorys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GroupId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categorys_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Savings",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Current = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     GroupId = table.Column<int>(nullable: false),
                     Money = table.Column<int>(nullable: false),
@@ -92,18 +113,18 @@ namespace FamilyWeb.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Money = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Costs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Costs_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Costs_Categorys_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categorys",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -114,9 +135,14 @@ namespace FamilyWeb.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Costs_UserId",
+                name: "IX_Categorys_GroupId",
+                table: "Categorys",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Costs_CategoryId",
                 table: "Costs",
-                column: "UserId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Savings_GroupId",
@@ -142,6 +168,9 @@ namespace FamilyWeb.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Categorys");
 
             migrationBuilder.DropTable(
                 name: "Groups");
