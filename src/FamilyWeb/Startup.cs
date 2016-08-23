@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FamilyWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FamilyWeb
 {
@@ -27,6 +29,10 @@ namespace FamilyWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            // добавляем контекст MobileContext в качестве сервиса в приложение
+            services.AddDbContext<FamilyContext>(options =>
+                options.UseSqlServer(connection));
             // Add framework services.
             services.AddMvc();
         }
