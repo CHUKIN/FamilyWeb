@@ -43,7 +43,7 @@ namespace FamilyWeb.Controllers
                     user.Group = db.Groups.Where(i => i.Name == groupname).First();
                     db.Users.Add(user);
                     db.SaveChanges();
-                    return Content("Пользоваель Id=" + user.Id.ToString() + " Login=" + user.Login.ToString() + " Password=" + user.Password.ToString() + " Успешно добавлен");             
+                    return Content("Пользоваель Id=" + user.Id.ToString() + " Login=" + user.Login.ToString() + " Password=" + user.Password.ToString() + " Группа=" + user.Group.ToString() + " Успешно добавлен");             
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace FamilyWeb.Controllers
                     category.Group = db.Groups.Where(i => i.Name == groupname).First();
                     db.Categorys.Add(category);
                     db.SaveChanges();
-                    return Content("Категория Id=" + category.Id.ToString() + " Имя=" + category.Name.ToString() + " Успешно добавлена");
+                    return Content("Категория Id=" + category.Id.ToString() + " Имя=" + category.Name.ToString() + " Группа=" + category.GroupId.ToString() + " Успешно добавлена");
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace FamilyWeb.Controllers
                     cash.Group = db.Groups.Where(i => i.Name == groupname).First();
                     db.Cashs.Add(cash);
                     db.SaveChanges();
-                    return Content("Кошелёк Id="+cash.Id.ToString()+" Name="+cash.Name.ToString()+" Баланс="+cash.Money.ToString()+" Успешно создан");
+                    return Content("Кошелёк Id="+cash.Id.ToString()+" Name="+cash.Name.ToString()+" Баланс="+cash.Money.ToString() + " Группа=" + cash.Group.ToString() + " Успешно создан");
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace FamilyWeb.Controllers
                     saving.Date = new DateTime(tmp[2], tmp[1], tmp[0], tmp[3], tmp[4], tmp[5]);
                     db.Savings.Add(saving);
                     db.SaveChanges();
-                    return Content("Накопление Id=" + saving.Id.ToString() + " Name=" + saving.Name.ToString() + " Сумма=" + saving.Money.ToString() + " Дата="+saving.Date.ToString()+" Успешно создано");
+                    return Content("Накопление Id=" + saving.Id.ToString() + " Name=" + saving.Name.ToString() + " Сумма=" + saving.Money.ToString() + " Дата="+saving.Date.ToString() + " Группа=" + saving.Group.ToString() + " Успешно создано");
                 }
                 else
                 {
@@ -143,11 +143,12 @@ namespace FamilyWeb.Controllers
                 return Content("У данного кошелька не хватает средств");
             }
             cash.Money -= cost.Money;
-
+            cost.Cash = cash;
+            cost.User = user;
             cost.Category = category;
             db.Costs.Add(cost);
             db.SaveChanges();
-            return Content("Трата Id="+cost.Id.ToString()+" Описание="+cost.Name.ToString()+" Потрачено="+cost.Money.ToString()+" Катеория="+cost.Category.ToString()+" Успешно создана");
+            return Content("Трата Id="+cost.Id.ToString()+" Описание="+cost.Name.ToString()+" Потрачено="+cost.Money.ToString()+" Катеория="+cost.Category.ToString() + " Пользователь=" + cost.User.ToString() + " Кошелёк=" + cost.Cash.ToString() + " Успешно создана");
         }
     }
 }

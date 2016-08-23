@@ -116,7 +116,8 @@ namespace FamilyWeb.Migrations
                     CategoryId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Money = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,7 +127,13 @@ namespace FamilyWeb.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categorys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Costs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -143,6 +150,11 @@ namespace FamilyWeb.Migrations
                 name: "IX_Costs_CategoryId",
                 table: "Costs",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Costs_UserId",
+                table: "Costs",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Savings_GroupId",
@@ -167,10 +179,10 @@ namespace FamilyWeb.Migrations
                 name: "Savings");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Categorys");
 
             migrationBuilder.DropTable(
-                name: "Categorys");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Groups");

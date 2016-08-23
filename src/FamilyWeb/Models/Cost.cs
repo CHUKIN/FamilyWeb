@@ -15,6 +15,9 @@ namespace FamilyWeb.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public int CashId { get; set; }
+        public Cash Cash { get; set; }
     }
 }

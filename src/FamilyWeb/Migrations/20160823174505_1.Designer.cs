@@ -8,7 +8,7 @@ using FamilyWeb.Models;
 namespace FamilyWeb.Migrations
 {
     [DbContext(typeof(FamilyContext))]
-    [Migration("20160823172150_1")]
+    [Migration("20160823174505_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,13 @@ namespace FamilyWeb.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Costs");
                 });
@@ -144,6 +148,11 @@ namespace FamilyWeb.Migrations
                     b.HasOne("FamilyWeb.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FamilyWeb.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
